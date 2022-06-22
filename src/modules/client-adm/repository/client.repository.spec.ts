@@ -37,10 +37,10 @@ describe("ProductRepository test", () => {
     const clientDb = await ClientModel.findOne({ where: { id: "1" }});
 
     expect(clientDb).toBeDefined();
-    expect(clientDb.id).toBe("1");
-    expect(clientDb.name).toBe("Client 1");
-    expect(clientDb.email).toBe("x@x.com");
-    expect(clientDb.address).toBe("Address 1");
+    expect(clientDb.id).toBe(client.id.id);
+    expect(clientDb.name).toBe(client.name);
+    expect(clientDb.email).toBe(client.email);
+    expect(clientDb.address).toBe(client.address);
   });
 
   it("should find a client", async() => {
