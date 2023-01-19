@@ -56,8 +56,7 @@ export default class InvoiceRepository implements InvoiceGateway {
         var invoice = await InvoiceModel.findOne({
             include: [
                 { 
-                    model: InvoiceProductModel, 
-                    where: { id: "1" } 
+                    model: InvoiceProductModel
                 }    
             ]
         });

@@ -1,10 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import InvoiceModel from "../repository/invoice.model";
 import InvoiceProductModel from "../repository/invoice.product.model";
-import InvoiceRepository from "../repository/invoice.repository";
-import GenerateInvoiceUseCase from "../usecase/generate-invoice/generate-invoice.usecase";
-import InvoiceFacade from "./invoice.facade";
-import FindInvoiceUseCase from "../usecase/find-invoice/find-invoice.usecase";
+import InvoiceFacadeFactory from "../factory/invoice.facade.factory";
 
 describe("InvoidFacade test", () => {
 
@@ -28,12 +25,7 @@ describe("InvoidFacade test", () => {
 
     it("should generate a invoice", async() => {
 
-        const repository = new InvoiceRepository();
-        const generateUseCase = new GenerateInvoiceUseCase(repository);
-        const facade = new InvoiceFacade({
-            generateUseCase: generateUseCase,
-            findUseCase: undefined,
-        });
+        const facade = InvoiceFacadeFactory.create();
 
         const invoice = {
             name: "Product 1",
@@ -67,14 +59,7 @@ describe("InvoidFacade test", () => {
 
     it("should find a invoice", async() => {
         
-        const repository = new InvoiceRepository();
-        const generateUseCase = new GenerateInvoiceUseCase(repository);
-        const findUseCase = new FindInvoiceUseCase(repository);
-
-        const facade = new InvoiceFacade({
-            generateUseCase: generateUseCase,
-            findUseCase: findUseCase,
-        });
+        const facade = InvoiceFacadeFactory.create();
 
         const invoice = {
             name: "Product 2",
