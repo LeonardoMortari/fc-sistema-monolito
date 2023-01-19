@@ -37,10 +37,6 @@ export default class InvoiceModel extends Model{
     @Column({ allowNull: false })
     zipCode: string;
 
-    // @ForeignKey(() => InvoiceProductModel)
-    // @Column({ allowNull: false })
-    // id_invoice_product: string;
-
     @HasMany(() => InvoiceProductModel)
     items: InvoiceProductModel[] 
     

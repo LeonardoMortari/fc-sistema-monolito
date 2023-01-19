@@ -43,7 +43,7 @@ describe("Find Invoice Use Case test unit", () => {
 
         const result = await useCase.execute(input);
 
-        expect(result.id).toBe(invoice.id.id);
+        expect(result.id).toBe(invoice.id);
         expect(result.name).toBe(invoice.name);
         expect(result.document).toBe(invoice.document);
         expect(result.address).toBe(invoice.address);

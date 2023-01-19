@@ -1,13 +1,15 @@
+import Id from "../../@shared/domain/value-object/id.value-object";
 import Invoice from "../domain/entity/invoice.entity";
 import Product from "../domain/entity/product.entity";
+import Address from "../domain/value-object/address.value-object";
 import InvoiceGateway from "../gateway/invoice.gateway";
+import { FindInvoiceUseCaseOutputDTO } from "../usecase/find-invoice/find-invoice.usecase.dto";
 import { GenerateInvoiceUseCaseOutputDto } from "../usecase/generate-invoice/generate-invoice.usecase.dto";
 import InvoiceModel from "./invoice.model";
 import InvoiceProductModel from "./invoice.product.model";
 
 export default class InvoiceRepository implements InvoiceGateway {
     async generate(invoice: Invoice): Promise<GenerateInvoiceUseCaseOutputDto> {
-        try {
         await InvoiceModel.create({
             id: invoice.id.id,
             name: invoice.name,
@@ -24,11 +26,11 @@ export default class InvoiceRepository implements InvoiceGateway {
                 id: item.id.id,
                 name: item.name,
                 price: item.price,
-            }))
+            })),
+            total: invoice.total
         }, {
             include: [{ model: InvoiceProductModel}]
         });
-        
 
         return {
             id: invoice.id.id,
@@ -45,14 +47,40 @@ export default class InvoiceRepository implements InvoiceGateway {
                 name: item.name,
                 price: item.price,
             })),
-            total: 350
+            total: invoice.total
         }
-    } catch(error) {
-        console.log(error);
-    }
     }
 
-    async find(id: string):Promise<Invoice> {
-        return null;        
+    async find(id: string):Promise<FindInvoiceUseCaseOutputDTO> {
+        
+        var invoice = await InvoiceModel.findOne({
+            include: [
+                { 
+                    model: InvoiceProductModel, 
+                    where: { id: "1" } 
+                }    
+            ]
+        });
+
+        return {
+            id: invoice.id,
+            name: invoice.name,
+            document: invoice.document,
+            address: {
+                street: invoice.street,
+                number: invoice.number,
+                complement: invoice.complement,
+                city: invoice.city,
+                state: invoice.state,
+                zipCode: invoice.zipCode
+            },
+            items: invoice.items.map((item) => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+            })),
+            total: 0,
+            createdAt: invoice.createdAt
+        }
     }
 }

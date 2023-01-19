@@ -19,6 +19,7 @@ export default class Invoice extends BaseEntity implements AggregateRoot {
     private _document: string;
     private _address: Address;
     private _items: Product[];
+    private _total: number;
 
     constructor(props: InvoiceProps) {
         super(props.id, props.createdAt, props.updatedAt);
@@ -42,5 +43,13 @@ export default class Invoice extends BaseEntity implements AggregateRoot {
 
     get items(): Product[] {
         return this._items;
+    }
+
+    get total(): number {
+        if (this._items == null) return 0;
+
+        return this.items.reduce((accumulator, obj) => {
+            return accumulator + obj.price;
+        }, 0);
     }
 }
