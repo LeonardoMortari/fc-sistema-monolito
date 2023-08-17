@@ -1,5 +1,3 @@
-import Product from "../domain/entity/product.entity";
-import Address from "../domain/value-object/address.value-object";
 import { FindInvoiceUseCaseOutputDTO } from "../usecase/find-invoice/find-invoice.usecase.dto";
 
 export interface FindInvoiceUseCaseInputDTO {
